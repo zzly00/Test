@@ -71,7 +71,7 @@ td {
   font-size: 14px;
 }
 
-.buy td {
+.buy td.quotetable__price {
   color: #00B15D;
 }
 
@@ -80,7 +80,7 @@ td {
   animation: buyAnimation 0.3s linear;
 }
 
-.sell td {
+.sell td.quotetable__price {
   color: #FF5B5A;
 }
 
