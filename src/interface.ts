@@ -1,3 +1,15 @@
+export interface LastPriceMessage {
+  topic?: string;
+  data?: {
+    symbol: string;
+    side: string;
+    size: number;
+    price: number;
+    tradeId: number;
+    timestamp: number;
+  }[];
+};
+
 export interface OrderBookMessage {
   topic?: string;
   data?: {
@@ -7,7 +19,7 @@ export interface OrderBookMessage {
     prevSeqNum: number;
     type: string;
     timestamp: number;
-    symbot: string;
+    symbol: string;
   };
   event?: string;
   channel?: string[];

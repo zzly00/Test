@@ -1,5 +1,6 @@
 import { reactive, readonly } from 'vue';
-import SocketUtil from '../SocketUtil'
+import SocketUtil from '../SocketUtil';
+import { LastPriceMessage } from '../interface';
 
 export default () => {
   let lastPrice: number = 0;
@@ -12,8 +13,7 @@ export default () => {
     colorStyle: ''
   });
 
-  const getPrice = (message: any) => {
-    // console.log('getPrice', message)
+  const getPrice = (message: LastPriceMessage) => {
     if(message.data && message.data[0]) {
       const currentPrice = message.data[0].price;
   
