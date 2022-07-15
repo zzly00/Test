@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { OrderBookInfo } from '../interface';
+import { formatNumber } from '../formatHelper';
 
  interface Props {
   showHead: boolean;
@@ -21,10 +22,10 @@ defineProps<Props>();
         </tr>
       </thead>
       <tbody>
-          <tr v-for="item in quoteData" :key="item.price">
-            <td class="quotetable__price">{{ item.price }}</td>
-            <td class="quotetable__size">{{ item.size }}</td>
-            <td class="quotetable__total">{{ item.total }}</td>
+          <tr v-for="item in quoteData" :key="item.price" :class="item.orderStyle">
+            <td class="quotetable__price">{{ formatNumber(item.price) }}</td>
+            <td class="quotetable__size" :class="item.orderStyle">{{ formatNumber(item.size) }}</td>
+            <td class="quotetable__total">{{ formatNumber(item.total) }}</td>
           </tr>
       </tbody>
     </table>
@@ -74,8 +75,18 @@ td {
   color: #00B15D;
 }
 
+.buy tr.new, td.lower {
+  background-color: rgba(255, 255, 255, 0);
+  animation: buyAnimation 0.3s linear;
+}
+
 .sell td {
   color: #FF5B5A;
+}
+
+.sell tr.new, td.higher {
+  background-color: rgba(255, 255, 255, 0);
+  animation: sellAnimation 0.3s linear;
 }
 
 .quotetable__price {
@@ -91,5 +102,25 @@ td {
 .quotetable__total {
   width: 45%;
   text-align: right;
+}
+
+@keyframes sellAnimation {
+  from {
+    background-color: translateX(0%); 
+  }
+
+  to {
+    background-color: rgba(255, 91, 90, 0.5);
+  }
+}
+
+@keyframes buyAnimation {
+  from {
+    background-color: translateX(0%); 
+  }
+
+  to {
+    background-color: rgba(0, 177, 93, 0.5);
+  }
 }
 </style>

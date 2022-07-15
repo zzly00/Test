@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import QuoteTable from './QuoteTable.vue';
 import usePrice from '../composition/usePrice';
 import useOrderBook from '../composition/useOrderBook';
+import { formatPrice } from '../formatHelper';
 
 const { priceState } = usePrice();
 const { orderBookState } = useOrderBook();
@@ -16,7 +17,10 @@ const bids = computed(() => orderBookState.bids);
   <div class="orderbook">
     <p class="orderbook__title">Order Book</p>
     <QuoteTable :showHead="true" :quoteType="'sell'" :quoteData="asks" />
-    <p class="orderbook__price" :class="priceState.colorStyle">{{ priceState.currentPrice }}</p>
+    <p class="orderbook__price" :class="priceState.colorStyle">{{ formatPrice(priceState.currentPrice) }} 
+      <font-awesome-icon icon="fa-solid fa-arrow-up" v-if="priceState.colorStyle === 'higher'" />
+      <font-awesome-icon icon="fa-solid fa-arrow-down" v-if="priceState.colorStyle === 'lower'" />
+    </p>
     <QuoteTable :showHead="false" :quoteType="'buy'" :quoteData="bids" />
   </div>
 </template>

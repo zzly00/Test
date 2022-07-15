@@ -13,26 +13,23 @@ export default () => {
 
   let totalAsks: string[][] = [[]];
   let totalBids: string[][] = [[]];
-  let previousAsks: OrderBookInfo[] = [];
-  let previousBids: OrderBookInfo[] = [];
 
   const formatOrderBook = (orders?: readonly (readonly string[])[], isAsks: boolean = false) => {
     if (!orders || orders.length === 0) return [] as OrderBookInfo[];
   
-    const reductCallback = (previousValue: OrderBookInfo[], currentValue: readonly string[]) => {
+    const reduceCallback = (previousValue: OrderBookInfo[], currentValue: readonly string[]) => {
       const previousTotal = previousValue.length === 0 ? 0 : previousValue[previousValue.length - 1].total;
+      
       previousValue.push({
         price: currentValue[0], 
         size: currentValue[1], 
-        total: Number(previousTotal) + Number(currentValue[1])
+        total: Number(previousTotal) + Number(currentValue[1]),
+        orderStyle: currentValue[2] === undefined ? 'new' : (currentValue[2] === 'new' ? '' : currentValue[2]),
       });
       return previousValue;
     };
   
-    const quotes: OrderBookInfo[] = isAsks ? orders.reduceRight(reductCallback, [] as OrderBookInfo[]).reverse() : orders.reduce(reductCallback, [] as OrderBookInfo[]);
-  
-    previousAsks = orderBookState.asks;
-    previousBids = orderBookState.bids;
+    const quotes: OrderBookInfo[] = isAsks ? orders.reduceRight(reduceCallback, [] as OrderBookInfo[]).reverse() : orders.reduce(reduceCallback, [] as OrderBookInfo[]);
     return quotes;
   };
 
@@ -54,10 +51,9 @@ export default () => {
       const newOrder = newOrders.find(order => order[0] === oldOrder[0]);
       if (newOrder) {
         removeList.push(newOrder[0]);
+        oldOrder[2] = Number(oldOrder[1]) > Number(newOrder[1]) ? 'higher' : (Number(oldOrder[1]) < Number(newOrder[1]) ? 'lower' : '');
         oldOrder[1] = newOrder[1];
-        oldOrder[2] = oldOrder[1] > newOrder[1] ? 'higher' : (oldOrder[1] < newOrder[1] ? 'lower' : '');
-      }
-
+      };
       return oldOrder;
     });
     

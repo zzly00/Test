@@ -17,4 +17,5 @@ export interface OrderBookInfo {
   price: string;
   size: string;
   total?: number;
+  orderStyle: string;
 };
