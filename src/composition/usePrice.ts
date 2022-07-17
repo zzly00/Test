@@ -18,7 +18,11 @@ export default () => {
       const currentPrice = message.data[0].price;
   
       priceState.currentPrice = message.data[0].price;
+
+      console.log('getPrice', currentPrice, lastPrice)
       priceState.colorStyle = currentPrice === lastPrice ? '' : currentPrice > lastPrice ? 'higher' : 'lower';
+      console.log('getPrice2', priceState.colorStyle)
+      
       lastPrice = currentPrice;
     }
   };

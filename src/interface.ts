@@ -31,3 +31,8 @@ export interface OrderBookInfo {
   total?: number;
   orderStyle: string;
 };
+
+export interface SocketRequest {
+  op: string;
+  args: string[];
+};
